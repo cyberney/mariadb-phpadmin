@@ -1,0 +1,33 @@
+version: '3.8'
+
+volumes:
+  mdb_vol:
+
+networks:
+  mdb_net:
+    driver: bridge
+
+services:
+  
+  mariadb:
+    image: mariadb:10.7.8
+    ports:
+      - 3306:3306
+    networks:
+      - mdb_net
+    volumes:
+      - mdb_vol:/var/lib/mysql
+    environment:
+      MARIADB_USER: user
+      MARIADB_PASSWORD: pwd123456
+      MARIADB_ROOT_PASSWORD: pwd123456
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8080:80
+    networks:
+      - mdb_net
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
